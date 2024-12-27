@@ -18,8 +18,6 @@ httpServer.listen(3000);
 
 /**
  * TO-DO
- * - GET - Boardgame by bggID
- *    -> Usado na busca por nome, ao clickar em um nome. Ou diretamente na busca por bggID
  * - GET - Scrapped data from BGG
  *    -> Usado juntamente com a busca anterior
  * - POST - Save Boardgame
