@@ -1,11 +1,10 @@
-import PlayersRange from "../vo/PlayersRange";
-import PlaytimeRange from "../vo/PlaytimeRange";
+import Range from "../vo/Range";
 import URL from "../vo/URL";
 
 export default class BggBoardgame {
   thumbnail: URL;
-  players: PlayersRange;
-  playtime: PlaytimeRange;
+  players: Range;
+  playtime: Range;
 
   constructor(
     thumbnail: string,
@@ -23,7 +22,7 @@ export default class BggBoardgame {
     readonly isExpansionFor: Array<{ id: number; value: string }>
   ) {
     this.thumbnail = new URL(thumbnail);
-    this.players = new PlayersRange(minPlayers, maxPlayers);
-    this.playtime = new PlaytimeRange(minPlaytime, maxPlaytime);
+    this.players = new Range(minPlayers, maxPlayers);
+    this.playtime = new Range(minPlaytime, maxPlaytime);
   }
 }
