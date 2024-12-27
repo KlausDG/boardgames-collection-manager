@@ -1,6 +1,6 @@
 import UUID from "../vo/UUID";
 
-export default class Publisher {
+export default class Designer {
   private id: UUID;
 
   constructor(id: string, readonly name: string) {
