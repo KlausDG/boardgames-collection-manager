@@ -19,6 +19,10 @@ export default class GetBoardgameDetails {
       mechanics: boardgameData.mechanics,
       isExpansion: boardgameData.isExpansion,
       isExpansionFor: boardgameData.isExpansionFor,
+      bestPlayersCount: boardgameData.bestPlayersCount,
+      weight: boardgameData.weight,
+      rank: boardgameData.rank,
+      link: boardgameData.link.getValue(),
     };
   }
 }
@@ -36,6 +40,10 @@ type Output = {
   mechanics: Array<string>;
   isExpansion: boolean;
   isExpansionFor: Array<{ id: number; value: string }>;
+  bestPlayersCount: Array<number>;
+  weight: number | null;
+  rank: number | null;
+  link: string;
 };
 
 type Range = {

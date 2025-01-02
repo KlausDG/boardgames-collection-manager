@@ -4,10 +4,12 @@ import BggHttpAdapter from "./infra/adapter/BggHttpAdapter";
 import BggController from "./infra/controller/BggController";
 import BggHttpGateway from "./infra/gateway/BggGateway";
 import { ExpressAdapter } from "./infra/http/HttpServer";
+import PuppeteerAdapter from "./infra/scrapper/PuppeteerAdapter";
 
 const httpServer = new ExpressAdapter();
 const bggAdapter = new BggHttpAdapter();
-const bggHttpGateway = new BggHttpGateway(bggAdapter);
+const bggScrapper = new PuppeteerAdapter();
+const bggHttpGateway = new BggHttpGateway(bggAdapter, bggScrapper);
 
 const getBoardgamesByName = new GetBoardgamesByName(bggHttpGateway);
 const getBoardgameDetails = new GetBoardgameDetails(bggHttpGateway);
@@ -18,7 +20,7 @@ httpServer.listen(3000);
 
 /**
  * TO-DO
- * - GET - Scrapped data from BGG
+ * - GET - Scrape data from BGG
  *    -> Usado juntamente com a busca anterior
  * - POST - Save Boardgame
  * - GET - Boardgames

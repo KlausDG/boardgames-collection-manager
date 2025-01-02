@@ -1,6 +1,7 @@
 import BggBoardgame from "../../domain/entity/BggBoardgame";
 import { HttpError } from "../../shared/errors/HttpError";
 import BggClient from "../adapter/BggClient";
+import { ScrapperAdapter } from "../scrapper/Scrapper";
 
 export interface BggGateway {
   getBoardgamesByName(input: string): Promise<any>;
@@ -8,7 +9,7 @@ export interface BggGateway {
 }
 
 export default class BggHttpGateway implements BggGateway {
-  constructor(readonly bggClient: BggClient) {}
+  constructor(readonly bggClient: BggClient, readonly bggScrapper: ScrapperAdapter) {}
 
   async getBoardgamesByName(input: string) {
     const bggData = await this.bggClient.get({ query: input, type: ["boardgame"] });
@@ -26,8 +27,9 @@ export default class BggHttpGateway implements BggGateway {
     });
   }
 
-  async getBoardgameByBggId(input: number) {
-    const bggData = await this.bggClient.getById(input);
+  async getBoardgameByBggId(bggId: number) {
+    const bggData = await this.bggClient.getById(bggId);
+    const bggAdditionalData = await this.getAdditionalBoardgameDataByBggId(bggId);
 
     const boardgame = bggData.item;
 
@@ -51,7 +53,16 @@ export default class BggHttpGateway implements BggGateway {
       publishers,
       mechanics,
       !!isExpansionFor.length,
-      isExpansionFor
+      isExpansionFor,
+      bggAdditionalData.bestPlayersCount,
+      bggAdditionalData.weight,
+      bggAdditionalData.rank,
+      bggAdditionalData.link
     );
+  }
+
+  private async getAdditionalBoardgameDataByBggId(bggId: number) {
+    const url = `https://boardgamegeek.com/boardgame/${bggId}`;
+    return this.bggScrapper.scrape(url);
   }
 }
