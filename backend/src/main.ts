@@ -20,8 +20,6 @@ httpServer.listen(3000);
 
 /**
  * TO-DO
- * - GET - Scrape data from BGG
- *    -> Usado juntamente com a busca anterior
  * - POST - Save Boardgame
  * - GET - Boardgames
  * - GET - Boardgames by Mechanic
