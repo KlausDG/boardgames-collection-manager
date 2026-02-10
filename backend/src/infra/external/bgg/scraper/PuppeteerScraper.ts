@@ -19,7 +19,7 @@ export class PuppeteerScraper implements BggScraperPort {
 
       return await page.evaluate((url) => {
         // Parser roda NO CONTEXTO DO BROWSER
-        return window.__BGG_PARSER__(url);
+        return (window as any).__BGG_PARSER__(url);
       }, url);
     } finally {
       await browser.close();

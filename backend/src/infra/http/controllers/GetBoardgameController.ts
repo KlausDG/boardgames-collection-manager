@@ -1,19 +1,35 @@
+import { Controller } from "@/application/http/Controller";
+import { HttpRequest } from "@/application/http/HttpRequest";
+import { HttpResponse } from "@/application/http/HttpResponse";
 import { GetBoardgameFromBggUseCase } from "@/application/usecases/GetBoardgameFromBgg/GetBoardgameFromBggUseCase";
-import { Request, Response } from "express";
 
-export class GetBoardgameController {
+export class GetBoardgameController implements Controller {
   constructor(private getBoardgameFromBgg: GetBoardgameFromBggUseCase) {}
 
-  async handle(req: Request, res: Response) {
+  async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const name = req.params.name;
-      if (!name) return res.status(400).json({ message: "Nome inválido" });
+      const name = request.params?.name;
+
+      if (!name) {
+        return {
+          statusCode: 400,
+          body: { message: "Nome inválido" },
+        };
+      }
 
       const boardgame = await this.getBoardgameFromBgg.execute(name);
-      res.json(boardgame);
+
+      return {
+        statusCode: 200,
+        body: boardgame,
+      };
     } catch (error: any) {
       console.error(error);
-      res.status(500).json({ message: error.message });
+
+      return {
+        statusCode: 500,
+        body: { message: error.message },
+      };
     }
   }
 }

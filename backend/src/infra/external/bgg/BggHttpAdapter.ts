@@ -1,12 +1,14 @@
-import { getBggSearch, getBggThing, SearchType } from "bgg-xml-api-client";
 import { BggApiPort } from "@/application/ports/BggApiPort";
+import { BggXmlApiClient, SearchType } from "bgg-xml-api-client";
 
 export class BggHttpAdapter implements BggApiPort {
-  async search({ query, type }: { query: string; type: SearchType[] }) {
-    return getBggSearch({ query, type }); //Add token
+  constructor(private client: BggXmlApiClient) {}
+
+  search(params: { query: string; type: SearchType[] }) {
+    return this.client.getBggSearch(params);
   }
 
-  async getBoardgameFromBgg(name: string) {
-    return getBggThing({ name }); //Add token
+  getBoardgameFromBgg(id: string) {
+    return this.client.getBggThing({ id });
   }
 }

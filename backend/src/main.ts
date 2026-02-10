@@ -1,22 +1,22 @@
-import GetBoardgameDetails from "./application/use-case/GetBoardgameDetails";
-import GetBoardgamesByName from "./application/use-case/GetBoardgamesByName";
-import BggHttpAdapter from "./infra/adapter/BggHttpAdapter";
-import BggController from "./infra/controller/BggController";
-import BggHttpGateway from "./infra/gateway/BggGateway";
-import { ExpressAdapter } from "./infra/http/HttpServer";
-import PuppeteerAdapter from "./infra/scrapper/PuppeteerAdapter";
+// import GetBoardgameDetails from "./application/use-case/GetBoardgameDetails";
+// import GetBoardgamesByName from "./application/use-case/GetBoardgamesByName";
+// import BggHttpAdapter from "./infra/adapter/BggHttpAdapter";
+// import BggController from "./infra/controller/BggController";
+// import BggHttpGateway from "./infra/gateway/BggGateway";
+// import { ExpressAdapter } from "./infra/http/HttpServer";
+// import PuppeteerAdapter from "./infra/scrapper/PuppeteerAdapter";
 
-const httpServer = new ExpressAdapter();
-const bggAdapter = new BggHttpAdapter();
-const bggScrapper = new PuppeteerAdapter();
-const bggHttpGateway = new BggHttpGateway(bggAdapter, bggScrapper);
+// const httpServer = new ExpressAdapter();
+// const bggAdapter = new BggHttpAdapter();
+// const bggScrapper = new PuppeteerAdapter();
+// const bggHttpGateway = new BggHttpGateway(bggAdapter, bggScrapper);
 
-const getBoardgamesByName = new GetBoardgamesByName(bggHttpGateway);
-const getBoardgameDetails = new GetBoardgameDetails(bggHttpGateway);
+// const getBoardgamesByName = new GetBoardgamesByName(bggHttpGateway);
+// const getBoardgameDetails = new GetBoardgameDetails(bggHttpGateway);
 
-new BggController(httpServer, getBoardgamesByName, getBoardgameDetails);
+// new BggController(httpServer, getBoardgamesByName, getBoardgameDetails);
 
-httpServer.listen(3000);
+// httpServer.listen(3000);
 
 /**
  * TO-DO
