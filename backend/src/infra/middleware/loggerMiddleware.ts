@@ -1,17 +1,20 @@
-import { NextFunction, Request, Response } from "express";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
-const loggerMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  console.log(`Requisição: ${req.method} ${req.url}`);
-  console.log("Corpo da requisição:", req.body);
+export function registerLoggerHook(app: FastifyInstance) {
+  app.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    console.log(`Requisição: ${request.method} ${request.url}`);
+    console.log("Corpo da requisição:", request.body);
 
-  const start = Date.now();
-
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    console.log(`Resposta: ${res.statusCode} - ${req.method} ${req.url} - ${duration}ms`);
+    // armazenar start time no contexto da request
+    (request as any).__startTime = Date.now();
   });
 
-  next();
-};
+  app.addHook("onResponse", async (request: FastifyRequest, reply: FastifyReply) => {
+    const start = (request as any).__startTime ?? Date.now();
+    const duration = Date.now() - start;
 
-export default loggerMiddleware;
+    console.log(
+      `Resposta: ${reply.statusCode} - ${request.method} ${request.url} - ${duration}ms`,
+    );
+  });
+}

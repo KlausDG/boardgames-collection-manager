@@ -1,4 +1,5 @@
-import { BggThingResponse, SearchType } from "bgg-xml-api-client";
+import { BggSearchResponse, BggThingResponse, SearchType } from "bgg-xml-api-client";
+import { SearchBoardgamesByNameDTO } from "../usecases/SearchBoardgamesByName/SearchBoardgamesByNameSTO";
 
 export type TypeValue = {
   type: string;
@@ -10,6 +11,7 @@ export type TypeValue = {
 export interface BggApiPort {
   search(params: { query: string; type: SearchType[] }): Promise<any>;
   getBoardgameFromBgg(id: string): Promise<BggThingResponse>;
+  searchBoardgamesByName(name: string): Promise<SearchBoardgamesByNameDTO>;
   // filterDesignersElements(data: TypeValue[]): string[];
   // filterPublishersElements(data: TypeValue[]): string[];
   // filterMechanicsElements(data: TypeValue[]): string[];

@@ -1,23 +1,26 @@
 import { Controller } from "@/application/http/Controller";
 import { HttpRequest } from "@/application/http/HttpRequest";
 import { HttpResponse } from "@/application/http/HttpResponse";
-import { GetBoardgameFromBggUseCase } from "@/application/usecases/GetBoardgameFromBgg/GetBoardgameFromBggUseCase";
+import { SearchBoardgamesByNameUseCase } from "@/application/usecases/SearchBoardgamesByName/SearchBoardgamesByNameUseCase";
 
-export class GetBoardgameController implements Controller {
-  constructor(private getBoardgameFromBgg: GetBoardgameFromBggUseCase) {}
+export class SearchBoardgamesByNameController implements Controller {
+  constructor(private searchBoardgamesByName: SearchBoardgamesByNameUseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const id = request.params?.id;
+      const name = request.query?.name;
 
-      if (!id) {
+      console.log(name);
+      
+
+      if (!name) {
         return {
           statusCode: 400,
-          body: { message: "Id inválido" },
+          body: { message: "Nome inválido" },
         };
       }
 
-      const boardgame = await this.getBoardgameFromBgg.execute(id);
+      const boardgame = await this.searchBoardgamesByName.execute(name);
 
       return {
         statusCode: 200,
