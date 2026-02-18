@@ -3,7 +3,7 @@ type BggResponse<T> = {
   total: number;
 };
 
-export function normalizeBggSearchResponse<T>(data: BggResponse<T>) {
+export function normalizeListResponse<T>(data: BggResponse<T>) {
   const items = Array.isArray(data.item) ? data.item : [data.item];
 
   return {

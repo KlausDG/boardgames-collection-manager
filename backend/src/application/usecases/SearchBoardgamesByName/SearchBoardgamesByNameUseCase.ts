@@ -1,5 +1,5 @@
 import { BggApiPort } from "@/application/ports/BggApiPort";
-import { SearchBoardgamesByNameDTO } from "./SearchBoardgamesByNameSTO";
+import { SearchBoardgamesByNameDTO } from "./SearchBoardgamesByNameDTO";
 
 export class SearchBoardgamesByNameUseCase {
   constructor(private bggClient: BggApiPort) {}

@@ -1,16 +1,14 @@
 import { BggApiPort } from "@/application/ports/BggApiPort";
-import { BggXmlApiClient, SearchType } from "bgg-xml-api-client";
-import { normalizeBggSearchResponse } from "./normalizeBggSearchResponse";
+import { BggXmlApiClient } from "bgg-xml-api-client";
+import { mapBggThingToBoardgame } from "./mappers/map-bgg-thing-to-boardgame";
+import { mapBggSearchByName } from "./mappers/map-bgg-search-by-name";
 
 export class BggHttpAdapter implements BggApiPort {
   constructor(private client: BggXmlApiClient) {}
 
-  search(params: { query: string; type: SearchType[] }) {
-    return this.client.getBggSearch(params);
-  }
-
-  getBoardgameFromBgg(id: string) {
-    return this.client.getBggThing({ id });
+  async getBoardgameFromBgg(id: string) {
+    const raw = await this.client.getBggThing({ id });
+    return mapBggThingToBoardgame(raw);
   }
 
   async searchBoardgamesByName(name: string) {
@@ -19,17 +17,6 @@ export class BggHttpAdapter implements BggApiPort {
       type: ["boardgame"],
     });
 
-    const normalized = normalizeBggSearchResponse(raw);
-
-    return {
-      items: normalized.items.map((item) => ({
-        bggId: Number(item.id),
-        name: item.name.value,
-        yearPublished: item.yearpublished?.value
-          ? Number(item.yearpublished.value)
-          : undefined,
-      })),
-      total: normalized.total,
-    };
+    return mapBggSearchByName(raw);
   }
 }

@@ -1,6 +1,5 @@
 import "dotenv/config";
 // Infra
-import { ExpressAdapter } from "@/infra/http/ExpressAdapter";
 import { FastifyAdapter } from "@/infra/http/FastifyAdapter";
 import { BggHttpAdapter } from "@/infra/gateway/bgg/BggHttpAdapter";
 import { PuppeteerScraper } from "@/infra/gateway/bgg/scraper/PuppeteerScraper";
@@ -16,6 +15,8 @@ import { BggApiPort } from "@/application/ports/BggApiPort";
 import { BggScraperPort } from "@/application/ports/BggScraperPort";
 import { BggXmlApiClient } from "bgg-xml-api-client";
 import { SearchBoardgamesByNameController } from "@/infra/http/controllers/SearchBoardgamesByNameController";
+import { FetchAdditionalBoardgameDataUseCase } from "@/application/usecases/fetch-additional-boardgame-data/fetch-additional-boardgame-data-usecase";
+import { FetchAdditionalGameDataController } from "@/infra/http/controllers/FetchAdditionalGameDataController";
 
 export function buildContainer() {
   // 🔌 Infra
@@ -29,6 +30,7 @@ export function buildContainer() {
   const searchBoardgamesByNameUseCase = new SearchBoardgamesByNameUseCase(
     bggApi,
   );
+  const fetchAdditionalBoardgameDataUseCase = new FetchAdditionalBoardgameDataUseCase(bggScraper);
 
   // 🎮 Controllers
   const getBoardgameController = new GetBoardgameController(
@@ -39,11 +41,16 @@ export function buildContainer() {
     searchBoardgamesByNameUseCase,
   );
 
+  const fetchAdditionalGameDataController = new FetchAdditionalGameDataController(
+    fetchAdditionalBoardgameDataUseCase
+  );
+
   return {
     httpServer,
     controllers: {
       getBoardgameController,
-      searchBoardgamesByNameController
+      searchBoardgamesByNameController,
+      fetchAdditionalGameDataController
     },
   };
 }
