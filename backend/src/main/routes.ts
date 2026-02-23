@@ -1,26 +1,14 @@
-import { HttpServer } from "@/application/http/HttpServer";
+import { HttpServer, HttpMethod } from "@/application/http/HttpServer";
 import { Controller } from "@/application/http/Controller";
 
-type Controllers = {
-  getBoardgameController: Controller;
-  searchBoardgamesByNameController: Controller;
-  fetchAdditionalGameDataController: Controller;
+export type Route = {
+  method: HttpMethod;
+  path: string;
+  controller: Controller;
 };
 
-export function setupRoutes(httpServer: HttpServer, controllers: Controllers) {
-  httpServer.register(
-    "get",
-    "/boardgames/search",
-    controllers.searchBoardgamesByNameController,
-  );
-  httpServer.register(
-    "get",
-    "/boardgames/:id",
-    controllers.getBoardgameController,
-  );
-  httpServer.register(
-    "get",
-    "/boardgames/:id/additional-data",
-    controllers.fetchAdditionalGameDataController,
-  );
+export function setupRoutes(httpServer: HttpServer, routes: Route[]) {
+  routes.forEach(({ method, path, controller }) => {
+    httpServer.register(method, path, controller);
+  });
 }
